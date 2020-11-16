@@ -38,9 +38,7 @@ PWBObjectLogsCreator >> constraint [
 
 { #category : #api }
 PWBObjectLogsCreator >> createLoggers [
-	loggers := ((focus methods
-		select:
-			[ :each | each class = FamixPWBFunction	"or: [ each class = FamixPWBSubRoutine ]" ])
+	loggers := (self focusBehaviors
 		collect: [ :each | PWBBehaviorLoggerCreator loggerFor: each ])
 		groupedBy: #position
 ]
@@ -53,6 +51,14 @@ PWBObjectLogsCreator >> focus [
 { #category : #accessing }
 PWBObjectLogsCreator >> focus: aFamixPWBmajorObject [
 	focus := aFamixPWBmajorObject
+]
+
+{ #category : #api }
+PWBObjectLogsCreator >> focusBehaviors [
+	^ (focus methods
+		select:
+			[ :each | each class = FamixPWBFunction or: [ each class = FamixPWBSubRoutine ] ])
+		asSet
 ]
 
 { #category : #initialization }
