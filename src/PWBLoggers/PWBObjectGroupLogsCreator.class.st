@@ -21,8 +21,7 @@ PWBObjectGroupLogsCreator class >> loggerFor: aCollection [
 { #category : #'as yet unclassified' }
 PWBObjectGroupLogsCreator class >> loggerForModel: aFamixPWBModel [
 	| objects |
-	objects := aFamixPWBModel allModelPWBUserObjects
-		, (aFamixPWBModel allWithType: FamixPWBWindow).
+	objects := aFamixPWBModel entities select: #isPWBClass.
 	^ self loggerFor: objects
 ]
 
