@@ -3,20 +3,19 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'focus',
-		'loggers',
 		'completeSourceWithLogs',
-		'logAccess',
 		'name',
-		'constraints'
+		'constraints',
+		'tracers'
 	],
 	#category : #PWBLoggers
 }
 
 { #category : #'as yet unclassified' }
-PWBObjectTracesCreator class >> loggersFor: aFamixPWBmajorObject [
+PWBObjectTracesCreator class >> tracersFor: aFamixPWBmajorObject [
 	^ self new
 		focus: aFamixPWBmajorObject;
-		createLoggers;
+		createTracers;
 		yourself
 ]
 
@@ -37,9 +36,9 @@ PWBObjectTracesCreator >> constraint [
 ]
 
 { #category : #api }
-PWBObjectTracesCreator >> createLoggers [
-	loggers := (self focusBehaviors
-		collect: [ :each | PWBBehaviorTracerCreator loggerFor: each ])
+PWBObjectTracesCreator >> createTracers [
+	tracers := (self focusBehaviors
+		collect: [ :each | PWBBehaviorTracerCreator tracerFor: each ])
 		groupedBy: #position
 ]
 
@@ -67,16 +66,6 @@ PWBObjectTracesCreator >> initialize [
 	constraints := OrderedCollection new
 ]
 
-{ #category : #accessors }
-PWBObjectTracesCreator >> loggers [
-	^ loggers
-]
-
-{ #category : #accessing }
-PWBObjectTracesCreator >> loggers: aCollection [ 
-	loggers := aCollection
-]
-
 { #category : #accessing }
 PWBObjectTracesCreator >> name [
 	name ifNil: [ name := focus name ].
@@ -84,19 +73,19 @@ PWBObjectTracesCreator >> name [
 ]
 
 { #category : #api }
-PWBObjectTracesCreator >> prepareLogs [
+PWBObjectTracesCreator >> prepareTraces [
 	| originalSource |
 	originalSource := focus sourceAnchor completeText.
 	completeSourceWithLogs := String
 		streamContents: [ :stream | 
 			| start |
 			start := 1.
-			(loggers keys sort: [ :a :b | a < b ])
+			(tracers keys sort: [ :a :b | a < b ])
 				do: [ :key | 
 					stream
 						<< (originalSource copyFrom: start to: key - 1);
 						tab.
-					(loggers at: key) do: [ :value | value logOn: stream ].
+					(tracers at: key) do: [ :value | value traceOn: stream ].
 					start := key ].
 			stream << (originalSource copyFrom: start to: originalSource size) ]
 ]
@@ -107,14 +96,14 @@ PWBObjectTracesCreator >> printOn: aStrem [
 		<< self name;
 		space;
 		<< '(';
-		<< loggers size asString;
+		<< tracers size asString;
 		<< ')'
 ]
 
 { #category : #actions }
 PWBObjectTracesCreator >> save [
 	| focusFile utf8bomHeader |
-	self prepareLogs.
+	self prepareTraces.
 	utf8bomHeader := #[16rEF 16rBB 16rBF].
 	focusFile := focus sourceAnchor fileReference.
 	focusFile
@@ -124,4 +113,14 @@ PWBObjectTracesCreator >> save [
 		writeStreamDo: [ :stream | 
 			stream setToEnd.
 			stream << completeSourceWithLogs ]
+]
+
+{ #category : #accessors }
+PWBObjectTracesCreator >> tracers [
+	^ tracers
+]
+
+{ #category : #accessing }
+PWBObjectTracesCreator >> tracers: aCollection [ 
+	tracers := aCollection
 ]

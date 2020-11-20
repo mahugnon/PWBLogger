@@ -9,26 +9,6 @@ Class {
 	#category : #PWBLoggers
 }
 
-{ #category : #'as yet unclassified' }
-PWBAbstractTracer class >> canlog: anObject [
-	^ false
-]
-
-{ #category : #'as yet unclassified' }
-PWBAbstractTracer class >> canlog: anObject withTag: aTag [
-	^ false
-]
-
-{ #category : #'as yet unclassified' }
-PWBAbstractTracer class >> loggerFor: anObject tag: aTag [
-	^ (self subclasses
-		detect: [ :sub | sub canlog: anObject withTag: aTag ]
-		ifNone: [ NotFound signal: 'Logger not found ... ' ]) new
-		focus: anObject;
-		tag: aTag;
-		yourself
-]
-
 { #category : #accessing }
 PWBAbstractTracer >> belongsTo [
 self subclassResponsibility 
@@ -52,31 +32,6 @@ PWBAbstractTracer >> focus: aFamixPWBParameter [
 
 ]
 
-{ #category : #testing }
-PWBAbstractTracer >> isAccessLogger [
-	^ false
-]
-
-{ #category : #testing }
-PWBAbstractTracer >> isEmptyLogger [
-	^ false
-]
-
-{ #category : #testing }
-PWBAbstractTracer >> isParameterLogger [
-	^ false
-]
-
-{ #category : #testing }
-PWBAbstractTracer >> isReturnLogger [
-	^ false
-]
-
-{ #category : #'as yet unclassified' }
-PWBAbstractTracer >> logOn: aStream [ 
-self subclassResponsibility 
-]
-
 { #category : #accessors }
 PWBAbstractTracer >> position [
 	^ position
@@ -95,4 +50,9 @@ PWBAbstractTracer >> tag [
 { #category : #accessing }
 PWBAbstractTracer >> tag: aString [ 
 	tag := aString
+]
+
+{ #category : #'as yet unclassified' }
+PWBAbstractTracer >> traceOn: aStream [ 
+self subclassResponsibility 
 ]

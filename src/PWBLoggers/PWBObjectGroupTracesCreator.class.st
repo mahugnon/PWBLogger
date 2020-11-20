@@ -3,26 +3,26 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'focus',
-		'loggers',
 		'name',
-		'constraints'
+		'constraints',
+		'tracers'
 	],
 	#category : #PWBLoggers
 }
 
 { #category : #'as yet unclassified' }
-PWBObjectGroupTracesCreator class >> loggerFor: aCollection [
+PWBObjectGroupTracesCreator class >> tracerFor: aCollection [
 	^ self new
 		focus: aCollection;
-		createLoggers;
+		createTracers;
 		yourself
 ]
 
 { #category : #'as yet unclassified' }
-PWBObjectGroupTracesCreator class >> loggerForModel: aFamixPWBModel [
+PWBObjectGroupTracesCreator class >> tracerForModel: aFamixPWBModel [
 	| objects |
 	objects := aFamixPWBModel entities select: #isPWBClass.
-	^ self loggerFor: objects
+	^ self tracerFor: objects
 ]
 
 { #category : #'as yet unclassified' }
@@ -34,30 +34,25 @@ PWBObjectGroupTracesCreator class >> updateData: aBuilder [
 		label: 'PWBBehaviorTrace';
 		action: [ | model |
 			model := MooseModel root first.
-			(self loggerForModel: model) save ]
+			(self tracerForModel: model) save ]
 ]
 
 { #category : #adding }
 PWBObjectGroupTracesCreator >> addConstraint: aConstraint [
-	loggers
+	tracers
 		detect: [ :logger | logger name = aConstraint name ]
 		ifFound: [ :founded | founded addConstraint: aConstraint ]
 ]
 
 { #category : #api }
-PWBObjectGroupTracesCreator >> createLoggers [
-	loggers := focus
-		collect: [ :each | PWBObjectTracesCreator loggersFor: each ]
+PWBObjectGroupTracesCreator >> createTracers [
+	tracers := focus
+		collect: [ :each | PWBObjectTracesCreator tracersFor: each ]
 ]
 
 { #category : #accessing }
 PWBObjectGroupTracesCreator >> focus: aCollection [ 
 	focus := aCollection
-]
-
-{ #category : #accessing }
-PWBObjectGroupTracesCreator >> loggers [
-	^ loggers
 ]
 
 { #category : #printing }
@@ -66,11 +61,16 @@ PWBObjectGroupTracesCreator >> printOn: aStrem [
 		<< 'Group';
 		space;
 		<< '(';
-		<< loggers size asString;
+		<< tracers size asString;
 		<< ')'
 ]
 
 { #category : #actions }
 PWBObjectGroupTracesCreator >> save [
-	loggers do: #save
+	tracers do: #save
+]
+
+{ #category : #accessing }
+PWBObjectGroupTracesCreator >> tracers [
+	^ tracers
 ]

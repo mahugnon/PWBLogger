@@ -9,8 +9,13 @@ PWBBehaviorTracer >> belongsTo [
 	^ focus parentType 
 ]
 
+{ #category : #public }
+PWBBehaviorTracer >> startOn: stream [
+	stream << 'f_mrl_logger().behavior_logger().ensure_save_behavior("'
+]
+
 { #category : #'as yet unclassified' }
-PWBBehaviorTracer >> logOn: stream [
+PWBBehaviorTracer >> traceOn: stream [
 	self startOn: stream.
 	stream
 		<< focus name;
@@ -19,9 +24,4 @@ PWBBehaviorTracer >> logOn: stream [
 		<< focus parentType name.
 	self endOn: stream.
 	^ stream
-]
-
-{ #category : #public }
-PWBBehaviorTracer >> startOn: stream [
-	stream << 'f_mrl_logger().behavior_logger().ensure_save_behavior("'
 ]

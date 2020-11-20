@@ -3,23 +3,23 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'focus',
-		'logger',
-		'name'
+		'name',
+		'tracer'
 	],
 	#category : #PWBLoggers
 }
 
 { #category : #'as yet unclassified' }
-PWBBehaviorTracerCreator class >> loggerFor: aFamixPWBBehavior [
+PWBBehaviorTracerCreator class >> tracerFor: aFamixPWBBehavior [
 	^ self new
 		focus: aFamixPWBBehavior;
-		createLogger;
-		logger
+		createTracer;
+		tracer
 ]
 
 { #category : #api }
-PWBBehaviorTracerCreator >> createLogger [
-		logger := PWBBehaviorTracer new
+PWBBehaviorTracerCreator >> createTracer [
+		tracer := PWBBehaviorTracer new
 		focus: focus;
 		position: focus signature sourceAnchor endPos + 1;
 		yourself
@@ -28,16 +28,6 @@ PWBBehaviorTracerCreator >> createLogger [
 { #category : #accessing }
 PWBBehaviorTracerCreator >> focus: aFamixPWBBehavior [
 	focus := aFamixPWBBehavior
-]
-
-{ #category : #accessing }
-PWBBehaviorTracerCreator >> logger [
-	^ logger
-]
-
-{ #category : #accessing }
-PWBBehaviorTracerCreator >> logger: anObject [
-	logger := anObject
 ]
 
 { #category : #accessing }
@@ -51,4 +41,14 @@ PWBBehaviorTracerCreator >> printOn: aStrem [
 	^ aStrem
 		<< self name;
 		space
+]
+
+{ #category : #accessing }
+PWBBehaviorTracerCreator >> tracer [
+	^ tracer
+]
+
+{ #category : #accessing }
+PWBBehaviorTracerCreator >> tracer: anObject [
+	tracer := anObject
 ]
