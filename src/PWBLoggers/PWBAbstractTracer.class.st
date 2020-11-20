@@ -1,5 +1,5 @@
 Class {
-	#name : #PWBAbstractLogger,
+	#name : #PWBAbstractTracer,
 	#superclass : #Object,
 	#instVars : [
 		'position',
@@ -10,17 +10,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PWBAbstractLogger class >> canlog: anObject [
+PWBAbstractTracer class >> canlog: anObject [
 	^ false
 ]
 
 { #category : #'as yet unclassified' }
-PWBAbstractLogger class >> canlog: anObject withTag: aTag [
+PWBAbstractTracer class >> canlog: anObject withTag: aTag [
 	^ false
 ]
 
 { #category : #'as yet unclassified' }
-PWBAbstractLogger class >> loggerFor: anObject tag: aTag [
+PWBAbstractTracer class >> loggerFor: anObject tag: aTag [
 	^ (self subclasses
 		detect: [ :sub | sub canlog: anObject withTag: aTag ]
 		ifNone: [ NotFound signal: 'Logger not found ... ' ]) new
@@ -30,69 +30,69 @@ PWBAbstractLogger class >> loggerFor: anObject tag: aTag [
 ]
 
 { #category : #accessing }
-PWBAbstractLogger >> belongsTo [
+PWBAbstractTracer >> belongsTo [
 self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
-PWBAbstractLogger >> endOn: stream [
+PWBAbstractTracer >> endOn: stream [
 	stream
 		<< '");';
 		tab
 ]
 
 { #category : #accessors }
-PWBAbstractLogger >> focus [
+PWBAbstractTracer >> focus [
 	^ focus
 ]
 
 { #category : #accessing }
-PWBAbstractLogger >> focus: aFamixPWBParameter [
+PWBAbstractTracer >> focus: aFamixPWBParameter [
 	focus := aFamixPWBParameter.
 
 ]
 
 { #category : #testing }
-PWBAbstractLogger >> isAccessLogger [
+PWBAbstractTracer >> isAccessLogger [
 	^ false
 ]
 
 { #category : #testing }
-PWBAbstractLogger >> isEmptyLogger [
+PWBAbstractTracer >> isEmptyLogger [
 	^ false
 ]
 
 { #category : #testing }
-PWBAbstractLogger >> isParameterLogger [
+PWBAbstractTracer >> isParameterLogger [
 	^ false
 ]
 
 { #category : #testing }
-PWBAbstractLogger >> isReturnLogger [
+PWBAbstractTracer >> isReturnLogger [
 	^ false
 ]
 
 { #category : #'as yet unclassified' }
-PWBAbstractLogger >> logOn: aStream [ 
+PWBAbstractTracer >> logOn: aStream [ 
 self subclassResponsibility 
 ]
 
 { #category : #accessors }
-PWBAbstractLogger >> position [
+PWBAbstractTracer >> position [
 	^ position
 ]
 
 { #category : #accessor }
-PWBAbstractLogger >> position: anInteger [ 
+PWBAbstractTracer >> position: anInteger [ 
 	position := anInteger
 ]
 
 { #category : #accessors }
-PWBAbstractLogger >> tag [
+PWBAbstractTracer >> tag [
 	^ tag
 ]
 
 { #category : #accessing }
-PWBAbstractLogger >> tag: aString [ 
+PWBAbstractTracer >> tag: aString [ 
 	tag := aString
 ]

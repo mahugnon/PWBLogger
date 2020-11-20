@@ -1,5 +1,5 @@
 Class {
-	#name : #PWBBehaviorLoggerCreator,
+	#name : #PWBBehaviorTracerCreator,
 	#superclass : #Object,
 	#instVars : [
 		'focus',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PWBBehaviorLoggerCreator class >> loggerFor: aFamixPWBBehavior [
+PWBBehaviorTracerCreator class >> loggerFor: aFamixPWBBehavior [
 	^ self new
 		focus: aFamixPWBBehavior;
 		createLogger;
@@ -18,36 +18,36 @@ PWBBehaviorLoggerCreator class >> loggerFor: aFamixPWBBehavior [
 ]
 
 { #category : #api }
-PWBBehaviorLoggerCreator >> createLogger [
-		logger := PWBBehaviorLogger new
+PWBBehaviorTracerCreator >> createLogger [
+		logger := PWBBehaviorTracer new
 		focus: focus;
 		position: focus signature sourceAnchor endPos + 1;
 		yourself
 ]
 
 { #category : #accessing }
-PWBBehaviorLoggerCreator >> focus: aFamixPWBBehavior [
+PWBBehaviorTracerCreator >> focus: aFamixPWBBehavior [
 	focus := aFamixPWBBehavior
 ]
 
 { #category : #accessing }
-PWBBehaviorLoggerCreator >> logger [
+PWBBehaviorTracerCreator >> logger [
 	^ logger
 ]
 
 { #category : #accessing }
-PWBBehaviorLoggerCreator >> logger: anObject [
+PWBBehaviorTracerCreator >> logger: anObject [
 	logger := anObject
 ]
 
 { #category : #accessing }
-PWBBehaviorLoggerCreator >> name [
+PWBBehaviorTracerCreator >> name [
 	name ifNil: [ name := focus name ].
 	^ name
 ]
 
 { #category : #printing }
-PWBBehaviorLoggerCreator >> printOn: aStrem [
+PWBBehaviorTracerCreator >> printOn: aStrem [
 	^ aStrem
 		<< self name;
 		space

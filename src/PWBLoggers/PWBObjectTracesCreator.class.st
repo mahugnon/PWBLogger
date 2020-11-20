@@ -1,5 +1,5 @@
 Class {
-	#name : #PWBObjectLogsCreator,
+	#name : #PWBObjectTracesCreator,
 	#superclass : #Object,
 	#instVars : [
 		'focus',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PWBObjectLogsCreator class >> loggersFor: aFamixPWBmajorObject [
+PWBObjectTracesCreator class >> loggersFor: aFamixPWBmajorObject [
 	^ self new
 		focus: aFamixPWBmajorObject;
 		createLoggers;
@@ -21,40 +21,40 @@ PWBObjectLogsCreator class >> loggersFor: aFamixPWBmajorObject [
 ]
 
 { #category : #adding }
-PWBObjectLogsCreator >> addConstraint: aConstraint [
+PWBObjectTracesCreator >> addConstraint: aConstraint [
 	constraints add: aConstraint.
 	aConstraint logsCreator: self
 ]
 
 { #category : #accessing }
-PWBObjectLogsCreator >> completeSourceWithLogs [
+PWBObjectTracesCreator >> completeSourceWithLogs [
 	^ completeSourceWithLogs
 ]
 
 { #category : #accessing }
-PWBObjectLogsCreator >> constraint [
+PWBObjectTracesCreator >> constraint [
 	^ constraints
 ]
 
 { #category : #api }
-PWBObjectLogsCreator >> createLoggers [
+PWBObjectTracesCreator >> createLoggers [
 	loggers := (self focusBehaviors
-		collect: [ :each | PWBBehaviorLoggerCreator loggerFor: each ])
+		collect: [ :each | PWBBehaviorTracerCreator loggerFor: each ])
 		groupedBy: #position
 ]
 
 { #category : #accessing }
-PWBObjectLogsCreator >> focus [
+PWBObjectTracesCreator >> focus [
 	^ focus
 ]
 
 { #category : #accessing }
-PWBObjectLogsCreator >> focus: aFamixPWBmajorObject [
+PWBObjectTracesCreator >> focus: aFamixPWBmajorObject [
 	focus := aFamixPWBmajorObject
 ]
 
 { #category : #api }
-PWBObjectLogsCreator >> focusBehaviors [
+PWBObjectTracesCreator >> focusBehaviors [
 	^ (focus methods
 		select:
 			[ :each | each class = FamixPWBFunction or: [ each class = FamixPWBSubRoutine ] ])
@@ -62,29 +62,29 @@ PWBObjectLogsCreator >> focusBehaviors [
 ]
 
 { #category : #initialization }
-PWBObjectLogsCreator >> initialize [
+PWBObjectTracesCreator >> initialize [
 	super initialize.
 	constraints := OrderedCollection new
 ]
 
 { #category : #accessors }
-PWBObjectLogsCreator >> loggers [
+PWBObjectTracesCreator >> loggers [
 	^ loggers
 ]
 
 { #category : #accessing }
-PWBObjectLogsCreator >> loggers: aCollection [ 
+PWBObjectTracesCreator >> loggers: aCollection [ 
 	loggers := aCollection
 ]
 
 { #category : #accessing }
-PWBObjectLogsCreator >> name [
+PWBObjectTracesCreator >> name [
 	name ifNil: [ name := focus name ].
 	^ name
 ]
 
 { #category : #api }
-PWBObjectLogsCreator >> prepareLogs [
+PWBObjectTracesCreator >> prepareLogs [
 	| originalSource |
 	originalSource := focus sourceAnchor completeText.
 	completeSourceWithLogs := String
@@ -102,7 +102,7 @@ PWBObjectLogsCreator >> prepareLogs [
 ]
 
 { #category : #printing }
-PWBObjectLogsCreator >> printOn: aStrem [
+PWBObjectTracesCreator >> printOn: aStrem [
 	^ aStrem
 		<< self name;
 		space;
@@ -112,7 +112,7 @@ PWBObjectLogsCreator >> printOn: aStrem [
 ]
 
 { #category : #actions }
-PWBObjectLogsCreator >> save [
+PWBObjectTracesCreator >> save [
 	| focusFile utf8bomHeader |
 	self prepareLogs.
 	utf8bomHeader := #[16rEF 16rBB 16rBF].

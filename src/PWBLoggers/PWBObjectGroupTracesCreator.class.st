@@ -1,5 +1,5 @@
 Class {
-	#name : #PWBObjectGroupLogsCreator,
+	#name : #PWBObjectGroupTracesCreator,
 	#superclass : #Object,
 	#instVars : [
 		'focus',
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PWBObjectGroupLogsCreator class >> loggerFor: aCollection [
+PWBObjectGroupTracesCreator class >> loggerFor: aCollection [
 	^ self new
 		focus: aCollection;
 		createLoggers;
@@ -19,14 +19,14 @@ PWBObjectGroupLogsCreator class >> loggerFor: aCollection [
 ]
 
 { #category : #'as yet unclassified' }
-PWBObjectGroupLogsCreator class >> loggerForModel: aFamixPWBModel [
+PWBObjectGroupTracesCreator class >> loggerForModel: aFamixPWBModel [
 	| objects |
 	objects := aFamixPWBModel entities select: #isPWBClass.
 	^ self loggerFor: objects
 ]
 
 { #category : #'as yet unclassified' }
-PWBObjectGroupLogsCreator class >> updateData: aBuilder [
+PWBObjectGroupTracesCreator class >> updateData: aBuilder [
 	<worldMenu>
 	(aBuilder item: #LoadingLastestTickets)
 		order: 10;
@@ -38,30 +38,30 @@ PWBObjectGroupLogsCreator class >> updateData: aBuilder [
 ]
 
 { #category : #adding }
-PWBObjectGroupLogsCreator >> addConstraint: aConstraint [
+PWBObjectGroupTracesCreator >> addConstraint: aConstraint [
 	loggers
 		detect: [ :logger | logger name = aConstraint name ]
 		ifFound: [ :founded | founded addConstraint: aConstraint ]
 ]
 
 { #category : #api }
-PWBObjectGroupLogsCreator >> createLoggers [
+PWBObjectGroupTracesCreator >> createLoggers [
 	loggers := focus
-		collect: [ :each | PWBObjectLogsCreator loggersFor: each ]
+		collect: [ :each | PWBObjectTracesCreator loggersFor: each ]
 ]
 
 { #category : #accessing }
-PWBObjectGroupLogsCreator >> focus: aCollection [ 
+PWBObjectGroupTracesCreator >> focus: aCollection [ 
 	focus := aCollection
 ]
 
 { #category : #accessing }
-PWBObjectGroupLogsCreator >> loggers [
+PWBObjectGroupTracesCreator >> loggers [
 	^ loggers
 ]
 
 { #category : #printing }
-PWBObjectGroupLogsCreator >> printOn: aStrem [
+PWBObjectGroupTracesCreator >> printOn: aStrem [
 	^ aStrem
 		<< 'Group';
 		space;
@@ -71,6 +71,6 @@ PWBObjectGroupLogsCreator >> printOn: aStrem [
 ]
 
 { #category : #actions }
-PWBObjectGroupLogsCreator >> save [
+PWBObjectGroupTracesCreator >> save [
 	loggers do: #save
 ]

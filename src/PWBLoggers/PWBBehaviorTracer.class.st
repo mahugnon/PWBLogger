@@ -1,16 +1,16 @@
 Class {
-	#name : #PWBBehaviorLogger,
-	#superclass : #PWBAbstractLogger,
+	#name : #PWBBehaviorTracer,
+	#superclass : #PWBAbstractTracer,
 	#category : #PWBLoggers
 }
 
 { #category : #accessing }
-PWBBehaviorLogger >> belongsTo [
+PWBBehaviorTracer >> belongsTo [
 	^ focus parentType 
 ]
 
 { #category : #'as yet unclassified' }
-PWBBehaviorLogger >> logOn: stream [
+PWBBehaviorTracer >> logOn: stream [
 	self startOn: stream.
 	stream
 		<< focus name;
@@ -22,6 +22,6 @@ PWBBehaviorLogger >> logOn: stream [
 ]
 
 { #category : #public }
-PWBBehaviorLogger >> startOn: stream [
+PWBBehaviorTracer >> startOn: stream [
 	stream << 'f_mrl_logger().behavior_logger().ensure_save_behavior("'
 ]
