@@ -29,7 +29,7 @@ PWBObjectGroupTracesCreator class >> tracerForModel: aFamixPWBModel [
 PWBObjectGroupTracesCreator class >> updateData: aBuilder [
 	<worldMenu>
 	(aBuilder item: #LoadingLastestTickets)
-		order: 10;
+		parent: #PWBTools;
 		help: 'Trace behaviors model root folder';
 		label: 'PWBBehaviorTrace';
 		action: [ | model |
