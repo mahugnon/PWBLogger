@@ -55,9 +55,10 @@ PWBObjectTracesCreator >> focus: aFamixPWBmajorObject [
 { #category : #api }
 PWBObjectTracesCreator >> focusBehaviors [
 	^ (focus methods
-		select:
-			[ :each | each class = FamixPWBFunction or: [ each class = FamixPWBSubRoutine ] ])
-		asSet
+		select: [ :each | 
+			each isPrivate not
+				and: [ each class = FamixPWBFunction
+						or: [ each class = FamixPWBSubRoutine ] ] ]) asSet
 ]
 
 { #category : #initialization }
