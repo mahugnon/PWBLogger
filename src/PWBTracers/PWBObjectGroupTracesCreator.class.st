@@ -1,28 +1,28 @@
 Class {
 	#name : #PWBObjectGroupTracesCreator,
-	#superclass : #Object,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'focus',
 		'name',
 		'constraints',
-		'tracers'
+		'tracers',
+		'modelSelector'
 	],
 	#category : #PWBTracers
 }
 
-{ #category : #'as yet unclassified' }
-PWBObjectGroupTracesCreator class >> tracerFor: aCollection [
-	^ self new
-		focus: aCollection;
-		createTracers;
+{ #category : #specs }
+PWBObjectGroupTracesCreator class >> defaultSpec [
+	^ SpBoxLayout newVertical
+		add: #modelSelector
+			withConstraints: [ :constraint | constraint height: self toolbarHeight ];
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
-PWBObjectGroupTracesCreator class >> tracerForModel: aFamixPWBModel [
-	| objects |
-	objects := aFamixPWBModel entities select: #isPWBClass.
-	^ self tracerFor: objects
+{ #category : #examples }
+PWBObjectGroupTracesCreator class >> run [
+	<example>
+	self new openWithSpec
 ]
 
 { #category : #'as yet unclassified' }
@@ -32,9 +32,7 @@ PWBObjectGroupTracesCreator class >> updateData: aBuilder [
 		parent: #PWBTools;
 		help: 'Trace behaviors model root folder';
 		label: 'PWBBehaviorTrace';
-		action: [ | model |
-			model := MooseModel root first.
-			(self tracerForModel: model) save ]
+		action: [ self run ]
 ]
 
 { #category : #adding }
@@ -55,6 +53,27 @@ PWBObjectGroupTracesCreator >> focus: aCollection [
 	focus := aCollection
 ]
 
+{ #category : #initialization }
+PWBObjectGroupTracesCreator >> initializePresenters [
+	modelSelector := self instantiate: SpLabelledDropList.
+	modelSelector label: 'Select model:'.
+	modelSelector dropList help: 'Select the PowerBuilder model'.
+	modelSelector
+		items: MooseModel root allModels;
+		selectIndex: 1;
+		display: [ :model | model name ];
+		whenSelectedItemChangedDo: [ :model | 
+			self window close.
+			self runOn: model ]
+]
+
+{ #category : #initialization }
+PWBObjectGroupTracesCreator >> initializeWindow: aWindowPresenter [
+	aWindowPresenter
+		title: 'PWB Trace creator';
+		initialExtent: 500 @ 100
+]
+
 { #category : #printing }
 PWBObjectGroupTracesCreator >> printOn: aStrem [
 	^ aStrem
@@ -63,6 +82,16 @@ PWBObjectGroupTracesCreator >> printOn: aStrem [
 		<< '(';
 		<< tracers size asString;
 		<< ')'
+]
+
+{ #category : #initialization }
+PWBObjectGroupTracesCreator >> runOn: model [
+	self
+		focus:
+			(model entities
+				select: [ :each | each isPWBClass and: [ each sourceAnchor isNotNil ] ]).
+	self createTracers.
+	self save
 ]
 
 { #category : #actions }
